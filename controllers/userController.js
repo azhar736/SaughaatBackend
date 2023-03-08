@@ -37,7 +37,6 @@ const loginUser = async (req, res) => {
         .status(400)
         .json({ error: "Please try to login with correct credentials.." });
     }
-    //Comapre user enter pass hash with db hash.
     const passCompare = await bcrypt.compare(password, user.password);
     if (!passCompare) {
       return res
@@ -49,7 +48,6 @@ const loginUser = async (req, res) => {
         id: user.id,
       },
     };
-    // console.log("The USER===", user);
     const token = jwt.sign(data, JWT_SCRET);
     res.json({ success: true, data: user, authToke: token });
   } catch (error) {
