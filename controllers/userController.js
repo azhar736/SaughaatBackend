@@ -28,7 +28,6 @@ const registerUser = async (req, res) => {
     res.send({ success: false, message: "Internal server error" });
   }
 };
-//Login Controller
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
