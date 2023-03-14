@@ -56,7 +56,69 @@ const loginUser = async (req, res) => {
   }
 };
 
+const editUser = async (req, res) => {
+  const id = req.body.id;
+  const data = req.body;
+  // console.log(id);
+  // console.log(data);
+  try {
+    const newUser = await User.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+    res.send({
+      success: true,
+      data: newUser,
+      message: "User has been Updated Successfully!",
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (user) {
+      res.send({
+        success: true,
+        message: "User has been Deleted Successfully!",
+      });
+    } else {
+      res.send({ success: false, message: "User didn't Exist!" });
+    }
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+};
+
+const allUsers = async (req, res) => {
+  try {
+    const allUser = await User.find();
+    res.send({ success: true, data: allUser });
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+};
+const signgleUser = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const user = await User.findOne({ _id: id });
+    if (user) {
+      res.send({ success: true, data: user });
+    } else {
+      res.send({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
+  deleteUser,
+  editUser,
+  allUsers,
+  signgleUser,
 };
